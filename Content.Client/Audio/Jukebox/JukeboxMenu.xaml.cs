@@ -31,6 +31,8 @@ public sealed partial class JukeboxMenu : FancyWindow
     public event Action<ProtoId<JukeboxPrototype>>? OnSongSelected;
     public event Action<float>? SetTime;
 
+    public event Action<float>? SetSoundVolume;
+
     private EntityUid? _audio;
 
     private float _lockTimer;
@@ -62,6 +64,8 @@ public sealed partial class JukeboxMenu : FancyWindow
         };
         PlaybackSlider.OnReleased += PlaybackSliderKeyUp;
 
+        SoundVolumeSlider.OnReleased += SoundVolumeSliderKeyUp;
+
         SetPlayPauseButton(_audioSystem.IsPlaying(_audio), force: true);
     }
 
@@ -78,6 +82,12 @@ public sealed partial class JukeboxMenu : FancyWindow
     private void PlaybackSliderKeyUp(Slider args)
     {
         SetTime?.Invoke(PlaybackSlider.Value);
+        _lockTimer = 0.5f;
+    }
+
+    private void SoundVolumeSliderKeyUp(Slider args)
+    {
+        SetSoundVolume?.Invoke(SoundVolumeSlider.Value);
         _lockTimer = 0.5f;
     }
 
@@ -136,6 +146,8 @@ public sealed partial class JukeboxMenu : FancyWindow
         {
             DurationLabel.Text = $"00:00 / 00:00";
         }
+
+        SoundVolumeLabel.Text = $@"{SoundVolumeSlider.Value:F0}";
 
         if (PlaybackSlider.Grabbed)
             return;

@@ -14,5 +14,13 @@
             <Button Name="StopButton" Text="{Loc 'jukebox-menu-buttonstop'}" />
             <Label Name="DurationLabel" Text="00:00 / 00:00" HorizontalAlignment="Right" HorizontalExpand="True"/>
         </BoxContainer>
+
+        <BoxContainer Orientation="Vertical">
+            <Label Name="SoundVolume" Text="Громкость" />
+            <Slider Name="SoundVolumeSlider" HorizontalExpand="True" />
+            <Label Name="SoundVolumeLabel" Text="00:00 / 00:00" HorizontalAlignment="Right" HorizontalExpand="True"/>
+        </BoxContainer>
+
+
     </BoxContainer>
 </ui:FancyWindow>

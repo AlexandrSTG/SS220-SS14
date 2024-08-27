@@ -25,9 +25,9 @@ public sealed class JukeboxSystem : SharedJukeboxSystem
         SubscribeLocalEvent<JukeboxComponent, JukeboxPauseMessage>(OnJukeboxPause);
         SubscribeLocalEvent<JukeboxComponent, JukeboxStopMessage>(OnJukeboxStop);
         SubscribeLocalEvent<JukeboxComponent, JukeboxSetTimeMessage>(OnJukeboxSetTime);
+        SubscribeLocalEvent<JukeboxComponent, JukeboxSetVolumeMessage>(OnJukeboxSetVolume);
         SubscribeLocalEvent<JukeboxComponent, ComponentInit>(OnComponentInit);
         SubscribeLocalEvent<JukeboxComponent, ComponentShutdown>(OnComponentShutdown);
-
         SubscribeLocalEvent<JukeboxComponent, PowerChangedEvent>(OnPowerChanged);
     }
 
@@ -71,6 +71,14 @@ public sealed class JukeboxSystem : SharedJukeboxSystem
         {
             var offset = actorComp.PlayerSession.Channel.Ping * 1.5f / 1000f;
             Audio.SetPlaybackPosition(component.AudioStream, args.SongTime + offset);
+        }
+    }
+
+    private void OnJukeboxSetVolume(EntityUid uid, JukeboxComponent component, JukeboxSetVolumeMessage args)
+    {
+        if (TryComp(args.Actor, out AudioComponent? audioComp))
+        {
+            Audio.SetVolume(uid, args.SoundVolume, audioComp);
         }
     }
 

@@ -60,6 +60,13 @@ public sealed class JukeboxSetTimeMessage(float songTime) : BoundUserInterfaceMe
     public float SongTime { get; } = songTime;
 }
 
+
+[Serializable, NetSerializable]
+public sealed class JukeboxSetVolumeMessage(float soundVolume) : BoundUserInterfaceMessage
+{
+    public float SoundVolume { get; } = soundVolume;
+}
+
 [Serializable, NetSerializable]
 public enum JukeboxVisuals : byte
 {

@@ -44,6 +44,8 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
         _menu.OnSongSelected += SelectSong;
 
         _menu.SetTime += SetTime;
+
+        _menu.SetSoundVolume += SetSoundVolume;
         PopulateMusic();
         Reload();
     }
@@ -77,6 +79,19 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
     public void SelectSong(ProtoId<JukeboxPrototype> songid)
     {
         SendMessage(new JukeboxSelectedMessage(songid));
+    }
+
+
+    public void SetSoundVolume(float Volume)
+    {
+        var sentVolume = Volume;
+        if (EntMan.TryGetComponent(Owner, out JukeboxComponent? jukebox) &&
+        EntMan.TryGetComponent(jukebox.AudioStream, out AudioComponent? audioComp))
+    {
+        audioComp.Volume = Volume;
+    }
+
+    SendMessage(new JukeboxSetVolumeMessage(sentVolume));
     }
 
     public void SetTime(float time)
