@@ -2,6 +2,7 @@ using Content.Shared.Audio.Jukebox;
 using Robust.Client.Audio;
 using Robust.Client.UserInterface;
 using Robust.Shared.Audio.Components;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Prototypes;
 
 namespace Content.Client.Audio.Jukebox;
@@ -9,6 +10,8 @@ namespace Content.Client.Audio.Jukebox;
 public sealed class JukeboxBoundUserInterface : BoundUserInterface
 {
     [Dependency] private readonly IPrototypeManager _protoManager = default!;
+    [Dependency] private readonly IEntityManager _entityManager = default!; 
+    private readonly AudioSystem _audio;
 
     [ViewVariables]
     private JukeboxMenu? _menu;
@@ -16,6 +19,7 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
     public JukeboxBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
         IoCManager.InjectDependencies(this);
+        _audio = _entityManager.System<AudioSystem>();
     }
 
     protected override void Open()
@@ -82,16 +86,15 @@ public sealed class JukeboxBoundUserInterface : BoundUserInterface
     }
 
 
-    public void SetSoundVolume(float Volume)
+    public void SetSoundVolume(float volume)
     {
-        var sentVolume = Volume;
         if (EntMan.TryGetComponent(Owner, out JukeboxComponent? jukebox) &&
         EntMan.TryGetComponent(jukebox.AudioStream, out AudioComponent? audioComp))
-    {
-        audioComp.Volume = Volume;
-    }
+        {
+            // _audio.SetVolume(jukebox.AudioStream, volume, audioComp);
+        }
 
-    SendMessage(new JukeboxSetVolumeMessage(sentVolume));
+        SendMessage(new JukeboxSetVolumeMessage(volume));
     }
 
     public void SetTime(float time)

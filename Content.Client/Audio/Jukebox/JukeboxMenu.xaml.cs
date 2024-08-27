@@ -30,7 +30,6 @@ public sealed partial class JukeboxMenu : FancyWindow
     public event Action? OnStopPressed;
     public event Action<ProtoId<JukeboxPrototype>>? OnSongSelected;
     public event Action<float>? SetTime;
-
     public event Action<float>? SetSoundVolume;
 
     private EntityUid? _audio;

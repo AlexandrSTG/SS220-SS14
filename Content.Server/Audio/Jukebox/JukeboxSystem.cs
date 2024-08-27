@@ -76,10 +76,12 @@ public sealed class JukeboxSystem : SharedJukeboxSystem
 
     private void OnJukeboxSetVolume(EntityUid uid, JukeboxComponent component, JukeboxSetVolumeMessage args)
     {
-        if (TryComp(args.Actor, out AudioComponent? audioComp))
+        if (TryComp(component.AudioStream, out AudioComponent? audioComp))
         {
-            Audio.SetVolume(uid, args.SoundVolume, audioComp);
+            var newVolume = -20f + args.SoundVolume / 5f;
+            Audio.SetVolume(component.AudioStream, newVolume, audioComp);
         }
+        Dirty(uid, component);
     }
 
     private void OnPowerChanged(Entity<JukeboxComponent> entity, ref PowerChangedEvent args)
